@@ -1,0 +1,48 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Caches
+*.sqlite3
+db.sqlite3
+
+# Virtual environment
+.venv/
+venv/
+env/
+env.bak/
+*.egg-info/
+dist/
+build/
+*.egg-info/
+pip-wheel-metadata/
+pip_egg_info/
+*.swp
+*.swo
+*.pyc
+*.pyo
+*.pyd
+
+# Django generated files
+*.log
+*.pot
+*.pyc
+*.bak
+local_settings.py
+media/
+
+# Static files
+staticfiles/
+static/
+
+# Development environment
+.env
+
+# IDE-specific files (e.g., PyCharm)
+.idea/
+.vscode/
+
+# Miscellaneous
+.DS_Store
