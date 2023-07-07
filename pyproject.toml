@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "escape-room-booking"
+version = "0.1.0"
+description = "Booking system made with Django"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "escape_room_booking"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "4.2.*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
