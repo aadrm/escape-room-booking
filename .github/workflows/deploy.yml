@@ -1,0 +1,34 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install ansible
+
+      - name: Deploy to Lightsail
+        env:
+          APP_NAME: myapp
+        run: |
+          ansible-galaxy collection install community.postgresql
+          ansible-playbook deploy.yml --extra-vars "app_name=$APP_NAME"
+
