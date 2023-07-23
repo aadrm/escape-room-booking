@@ -49,6 +49,17 @@ class Slot(models.Model):
     def __str__(self):
         return str(self.room) + ' | ' +  self.start.astimezone().strftime("%Y-%m-%d %H:%M" )
 
+    def _is_start_in_future(self):
+        return self.start > timezone.now()
+
+    def _get_other_slots_end_after_start_before(self, after_datetime, before_datetime):
+        return Slot.objects.filter(block_end__gte=after_datetime, start__lte=before_datetime).exclude(pk=self.pk)
+
+    def _get_other_slots_by_start_between_datetimes(self, after_datetime, before_datetime):
+        """ Uses the start of sessions as reference
+        """
+        return Slot.objects.filter(start__gte=after_datetime, start__lte=before_datetime).exclude(pk=self.pk)
+
     def is_booked(self):
         # for item in self.cart_items.all():
         #     if item.status > 0:
@@ -61,9 +72,6 @@ class Slot(models.Model):
          this_moment = timezone.now()
          buffer = this_moment + timedelta(minutes=AppointmentsSettings.load().buffer_in_minutes)
          return self.start > buffer
-
-    def _is_start_in_future(self):
-        return self.start > timezone.now()
 
     def is_adjacent_after_to_taken_slot(self):
         slots = self.get_before_after_minutes_slots(20, 110)
@@ -89,23 +97,6 @@ class Slot(models.Model):
             if slot.is_booked():
                 return True
         return False
-
-    def _get_other_slots_end_after_start_before(self, after_datetime, before_datetime):
-        return Slot.objects.filter(block_end__gte=after_datetime, start__lte=before_datetime).exclude(pk=self.pk)
-
-    def _get_other_slots_by_start_between_datetimes(self, after_datetime, before_datetime):
-        """ Uses the start of sessions as reference
-        """
-        return Slot.objects.filter(start__gte=after_datetime, start__lte=before_datetime).exclude(pk=self.pk)
-
-    def incentive_discount(self):
-        if self.is_parallel_to_taken_slot():
-            discount = get_booking_settings().incentive_discount_parallel_slots
-        elif self.is_adjacent_to_taken_slot():
-            discount = get_booking_settings().incentive_discount_adjacent_slots
-        else:
-            discount = 0
-        return discount
 
     def _overlapping_slots(self):
         overlapping_slots = Slot.objects.filter(

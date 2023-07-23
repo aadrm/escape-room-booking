@@ -26,11 +26,11 @@ class AppointmentsSettings(SingletonModel):
     )
 
     parallel_slot_frame_in_minutes = models.PositiveSmallIntegerField(
-        verbose_name=()
+        verbose_name=_("Consider parallel other slots that start within this number of minutes from each other")
     )
 
     adjacent_slot_frame_in_minutes = models.PositiveSmallIntegerField(
-        verbose_name=()
+        verbose_name=("Consider adjacent other slots that end within this amount of minutes from the start of each other")
     )
 
 
