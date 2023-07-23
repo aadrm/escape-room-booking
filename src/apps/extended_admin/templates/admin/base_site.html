@@ -1,0 +1,11 @@
+{% extends 'admin/base_site.html' %}
+
+{% block branding %}
+
+    <div id="custom-menu">
+        <a href="{% url 'admin:index' %}">Dashboard</a>
+    </div>
+
+    {{ block.super }}
+
+{% endblock branding %}
