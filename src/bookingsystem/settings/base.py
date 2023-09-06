@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'apps.extended_admin',
     'apps.appointments',
+    'apps.shop',
 ]
 
 MIDDLEWARE = [

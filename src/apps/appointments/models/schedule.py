@@ -1,26 +1,10 @@
-import ast
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .slot import Slot
+from common.days_of_week_mixin import DaysOfWeekMixin
 
-class Schedule(models.Model):
-    MONDAY = 0
-    TUESDAY = 1
-    WEDNESDAY = 2
-    THURSDAY = 3
-    FRIDAY = 4
-    SATURDAY = 5
-    SUNDAY = 6
-    DAY_CHOICES = [
-        (MONDAY, _('Mon')),
-        (TUESDAY, _('Tue')),
-        (WEDNESDAY, _('Wed')),
-        (THURSDAY, _('Thu')),
-        (FRIDAY, _('Fri')),
-        (SATURDAY, _('Sat')),
-        (SUNDAY, _('Sun')),
-    ]
+class Schedule(models.Model, DaysOfWeekMixin):
+
     start_date = models.DateField()
     end_date = models.DateField()
     days_of_week = models.CharField(
@@ -51,18 +35,6 @@ class Schedule(models.Model):
         for slot in slots:
             if not slot.is_booked():
                 slot.delete()
-
-
-    def set_days_of_week(self, days):
-        self.days_of_week = ','.join(str(day) for day in days)
-
-    def get_days_of_week(self):
-        return [int(day) for day in ast.literal_eval(self.days_of_week) if day]
-
-    def get_days_of_week_display(self):
-        days = self.get_days_of_week()
-        print(days)
-        return [dict(self.DAY_CHOICES)[day] for day in days]
 
     def save(self, *args, **kwargs):
         self._delete_related_not_booked_slots()

@@ -1,4 +1,4 @@
-from .slot_admin import SlotAdmin
+from .appointments_settings_admin import AppointmentsSettingsAdmin
 from .room_admin import RoomAdmin
 from .schedule_admin import ScheduleAdmin
-from .appointments_settings_admin import AppointmentsSettingsAdmin
+from .slot_admin import SlotAdmin
