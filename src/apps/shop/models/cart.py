@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from . import CartItemAppointment
 
 
 class Cart(models.Model):
@@ -10,8 +11,8 @@ class Cart(models.Model):
         COMPLETED = 2
         CANCELLED = 3
 
-    status = models.IntegerField(choices=Status.choices)
+    status = models.IntegerField(choices=Status.choices, default=Status.OPEN)
 
     def __str__(self) -> str:
-        return self.get_status_display()
+        return str(self.pk)
 

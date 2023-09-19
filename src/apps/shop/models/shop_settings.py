@@ -27,11 +27,17 @@ class ShopSettings(SingletonModel):
         default=365,
     )
 
-    coupon_code_characters = models.CharField(
+    default_coupon_code_chars = models.SlugField(
         verbose_name=_('Coupon default used characters'),
         help_text=_('Any lower case letters will be capitalized, avoid duplicate characters'),
         default='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-        max_length=64,
+        max_length=16,
+    )
+
+    slot_set_aside_time = models.PositiveSmallIntegerField(
+        verbose_name=_("Slot set aside time"),
+        help_text=_('Time that a slot is reserved after added to the cart'),
+        default=20,
     )
 
     class Meta:
@@ -39,5 +45,5 @@ class ShopSettings(SingletonModel):
 
     def save(self, *args, **kwargs):
         """ override """
-        self.coupon_code_characters = self.coupon_code_characters.upper()
+        self.default_coupon_code_chars = self.default_coupon_code_chars.upper()
         super().save(*args, **kwargs)

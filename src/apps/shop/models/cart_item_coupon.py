@@ -2,10 +2,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from . import CartProduct
+from . import CartItem
 
 
-class CartProductCoupon(CartProduct):
+class CartItemCoupon(CartItem):
     coupon = models.ForeignKey("shop.Coupon", verbose_name=_("coupon"), on_delete=models.CASCADE)
 
 

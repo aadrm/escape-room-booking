@@ -6,6 +6,6 @@ from .shop_settings import ShopSettings
 from .coupon import Coupon
 from .cart import Cart
 from .cart_coupon import CartCoupon
-from .cart_product import CartProduct
-from .cart_product_appointment import CartProductAppointment
-from .cart_product_coupon import CartProductCoupon
+from .cart_item import CartItem
+from .cart_item_appointment import CartItemAppointment
+from .cart_item_coupon import CartItemCoupon

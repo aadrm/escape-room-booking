@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from ..models import CartProductAppointment
+from ..models import CartItemAppointment
 
 
-@admin.register(CartProductAppointment)
-class CartProductAppointmentAdmin(admin.ModelAdmin):
+@admin.register(CartItemAppointment)
+class CartItemAppointmentAdmin(admin.ModelAdmin):
     list_display = [
         'pk'
     ]

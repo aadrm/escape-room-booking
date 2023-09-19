@@ -1,23 +1,22 @@
 from django.contrib import admin
 from django import forms
-from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 
 from ..models import (
     Cart,
     CartCoupon,
-    CartProductAppointment,
-    CartProductCoupon,
+    CartItemAppointment,
+    CartItemCoupon,
     Product,
     ProductGroupCoupon,
     ProductGroupAppointment
 )
 
 
-class CartProductAppointmentInlineForm(forms.ModelForm):
+class CartItemAppointmentInlineForm(forms.ModelForm):
 
     class Meta:
-        model = CartProductAppointment
+        model = CartItemAppointment
         exclude = []
 
     def __init__(self, *args, **kwargs):
@@ -28,10 +27,10 @@ class CartProductAppointmentInlineForm(forms.ModelForm):
         )
 
 
-class CartProductCouponInlineForm(forms.ModelForm):
+class CartItemCouponInlineForm(forms.ModelForm):
 
     class Meta:
-        model = CartProductCoupon
+        model = CartItemCoupon
         exclude = []
 
     def __init__(self, *args, **kwargs):
@@ -42,13 +41,14 @@ class CartProductCouponInlineForm(forms.ModelForm):
         )
 
 
-class TabularInlineCartProductAppointments(admin.TabularInline):
-    model = CartProductAppointment
-    form = CartProductAppointmentInlineForm
+class TabularInlineCartItemAppointments(admin.TabularInline):
+    model = CartItemAppointment
+    form = CartItemAppointmentInlineForm
 
-class TabularInlineCartProductCoupons(admin.TabularInline):
-    model = CartProductCoupon
-    form = CartProductCouponInlineForm
+
+class TabularInlineCartItemCoupons(admin.TabularInline):
+    model = CartItemCoupon
+    form = CartItemCouponInlineForm
 
 
 class TabularInlineCartCoupons(admin.TabularInline):
@@ -62,8 +62,8 @@ class CartAdmin(admin.ModelAdmin):
         'status',
     ]
     inlines = [
-        TabularInlineCartProductAppointments,
-        TabularInlineCartProductCoupons,
+        TabularInlineCartItemAppointments,
+        TabularInlineCartItemCoupons,
         TabularInlineCartCoupons,
     ]
 
