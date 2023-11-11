@@ -3,6 +3,7 @@ from django.utils.timezone import timedelta
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from apps.appointments.models import Slot, Room
+from apps.shop.models import Cart, Product
 
 
 
@@ -32,7 +33,7 @@ class TestSaveSlotCase(BaseSlotTestCase):
 
 
     def test_slot_save_successful(self):
-        self.conflicting_slot.start = timezone.now() +  timedelta(minutes=60)
+        self.conflicting_slot.start = timezone.now() + timedelta(minutes=60)
         self.conflicting_slot.save()
         self.slot.save()
 
@@ -70,3 +71,15 @@ class TestDeleteSlotCase(BaseSlotTestCase):
         with self.assertRaises(ValidationError):
             self.slot.delete()
 
+
+class TestSlotCase(BaseSlotTestCase):
+
+
+    def setUp(self):
+        super().setUp()
+        self.cart = Cart.objects.create()
+        self.product = Product.objects.create(name='myproduct')
+
+    def test_is_reserved(self):
+        self.cart.add_item_appointment(self.product, self.slot)
+        self.assertEqual(True, self.slot.is_reserved())

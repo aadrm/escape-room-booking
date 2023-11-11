@@ -10,13 +10,16 @@ class CartItemAppointment(CartItem):
     slot = models.ForeignKey("appointments.Slot", verbose_name=_("slot"), on_delete=models.CASCADE)
     set_aside_datum = models.DateTimeField(_("Expiry"), auto_now_add=True)
 
-    @property
     def expiry(self):
         return self.set_aside_datum + timezone.timedelta(minutes=ShopSettings.load().slot_set_aside_time)
 
+    def is_expired(self):
+        return self.expiry() < timezone.datetime.now()
+
+    def is_blocking_slot(self):
+        return not self.is_expired() and self.cart.is_slot_blocking()
 
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
 
     def reset_expiry(self):

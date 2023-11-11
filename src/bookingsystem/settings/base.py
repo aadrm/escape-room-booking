@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.extended_admin',
     'apps.appointments',
     'apps.shop',
+    'apps.rooster',
 ]
 
 MIDDLEWARE = [
@@ -117,11 +118,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+# USE_TZ = True
 
 TIME_FORMAT = 'H:i'
 DATE_FORMAT = 'Y-m-d'

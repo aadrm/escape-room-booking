@@ -33,16 +33,21 @@ class Slot(models.Model):
         on_delete=models.SET_NULL
     )
 
-    @property
+
     def is_available(self):
         return not self.is_reserved() \
             and not self.is_affected_by_buffer() \
             and not self.is_enabled\
             and self._is_start_in_future
 
-    @property
     def is_available_to_staff(self):
         return not self.is_reserved()
+
+    def is_reserved(self):
+        related_cart_items = self.cartitemappointment_set.all()
+        for item in related_cart_items:
+            if item.cart.is_slot_blocking():
+                return True
 
     def __str__(self):
         return str(self.room) + ' | ' +  self.start.astimezone().strftime("%Y-%m-%d %H:%M" )
@@ -149,7 +154,7 @@ class Slot(models.Model):
         self.appointment_end = self.start + timedelta(minutes=self.duration)
         self.block_end = self.start + timedelta(minutes=self.duration + self.buffer)
         conflicting_slots = self._overlapping_same_room_slots()
-        if conflicting_slots .exists():
+        if conflicting_slots.exists():
             raise ValidationError("Slot overlaps with other slots")
         else:
             super().save(*args, **kwargs)
