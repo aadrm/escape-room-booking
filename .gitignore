@@ -11,6 +11,7 @@ db.sqlite3
 # Virtual environment
 .venv/
 venv/
+myenv/
 env/
 env.bak/
 *.egg-info/
