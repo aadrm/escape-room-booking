@@ -2,6 +2,7 @@ from typing import Any
 from django.contrib import admin, messages
 from django.contrib.messages.storage import default_storage
 from django.core.exceptions import ValidationError
+from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 
 from ..models import Slot
@@ -21,6 +22,27 @@ class SlotAdmin(admin.ModelAdmin):
         'is_enabled'
     ]
     list_filter = ['room', 'start']
+    readonly_fields = [
+        'appointment_end',
+        'block_end',
+        'schedule'
+    ]
+
+    def delete_queryset(self, request: HttpRequest, queryset: QuerySet[Any]) -> None:
+        not_deleted_count = 0
+        for obj in queryset.all():
+            try:
+                obj.delete()
+            except ValidationError as error:
+                not_deleted_count += 1
+                print(error)
+
+        if not_deleted_count:
+            self.message_user(
+                request,
+                f'{not_deleted_count} slots could not be deleted',
+                level=messages.WARNING
+            )
 
     def enable_slots(self, request, queryset):
         queryset.update(is_enabled=True)

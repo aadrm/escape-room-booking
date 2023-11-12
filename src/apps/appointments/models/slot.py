@@ -130,7 +130,7 @@ class Slot(models.Model):
         # slots = []
         current_date = max(start_date, timezone.now().date())
         while current_date <= end_date:
-            current_datetime = timezone.make_aware(timezone.datetime.combine(current_date, start_time))
+            current_datetime = timezone.datetime.combine(current_date, start_time)
             if current_datetime.weekday() in days_of_week:
                 for n in range(repeat_times):
                     slot = cls(
@@ -163,5 +163,4 @@ class Slot(models.Model):
         if self.is_booked():
             # Slot is booked, prevent deletion
             raise ValidationError("Cannot delete a booked slot.")
-        else:
-            super().delete(*args, **kwargs)
+        super().delete(*args, **kwargs)

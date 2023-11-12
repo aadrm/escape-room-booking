@@ -37,7 +37,8 @@ class Schedule(models.Model, DaysOfWeekMixin):
                 slot.delete()
 
     def save(self, *args, **kwargs):
-        self._delete_related_not_booked_slots()
+        if not self._state.adding:
+            self._delete_related_not_booked_slots()
         super().save(*args, **kwargs)
         Slot.create_slots_bound_to_schedule(
             schedule=self,
@@ -50,3 +51,8 @@ class Schedule(models.Model, DaysOfWeekMixin):
             room=self.room,
             repeat_times=self.repeat_times,
         )
+
+
+    def delete(self):
+        self._delete_related_not_booked_slots()
+        super().delete()

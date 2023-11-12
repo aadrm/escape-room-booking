@@ -72,7 +72,7 @@ class TestDeleteSlotCase(BaseSlotTestCase):
             self.slot.delete()
 
 
-class TestSlotCase(BaseSlotTestCase):
+class TestSlotCartInteractionCase(BaseSlotTestCase):
 
 
     def setUp(self):
