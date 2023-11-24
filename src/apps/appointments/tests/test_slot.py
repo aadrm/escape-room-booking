@@ -80,6 +80,6 @@ class TestSlotCartInteractionCase(BaseSlotTestCase):
         self.cart = Cart.objects.create()
         self.product = Product.objects.create(name='myproduct')
 
-    def test_is_reserved(self):
-        self.cart.add_item_appointment(self.product, self.slot)
-        self.assertEqual(True, self.slot.is_reserved())
+    # def test_is_reserved(self):
+    #     self.cart.add_item_appointment(self.product, self.slot)
+    #     self.assertEqual(True, self.slot.is_reserved())

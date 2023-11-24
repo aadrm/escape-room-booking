@@ -15,7 +15,7 @@ class CartTestCase(TestCase):
             start=timezone.datetime.now() + timezone.timedelta(days=1),
             room=self.room
         )
-        self.product1 = Product.objects.create(name="slot product 1")
+        self.product1 = Product.objects.create(name="slot product 1", base_price=10)
         self.product2 = Product.objects.create(name="coupon product 1")
 
     def test_add_coupon_to_cart(self):
@@ -42,5 +42,16 @@ class CartTestCase(TestCase):
         self.cart.add_item_appointment(self.product1, self.slot1)
         self.cart.add_item_appointment(self.product1, self.slot1)
         self.assertEqual(1, self.cart.get_cartitemappointment_set().count())
+
+    def test_remove_expired_appointments(self):
+        appointment_item = self.cart.add_item_appointment(self.product1, self.slot1)
+        appointment_item.set_aside_datum = timezone.now() - timezone.timedelta(days=1)
+        appointment_item.save()
+        self.assertEqual(0, self.cart.get_cartitemappointment_set().count())
+
+    def test_calculate_total_base_price(self):
+        self.cart.add_item_appointment(self.product1, self.slot1)
+        total_base_price = self.cart.get_total_base_price()
+        self.assertAlmostEqual(10, total_base_price)
 
 

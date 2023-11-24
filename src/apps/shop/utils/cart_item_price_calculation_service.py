@@ -15,12 +15,12 @@ class CartItemPriceCalculatorService:
     def apply_coupons(cls, coupons, item_price_list):
         for cart_coupon in coupons:
             coupon = cart_coupon.coupon
-
-            if coupon.is_percent:
-                cls.apply_percent_coupon(coupon, item_price_list)
-            else:
-                cls.apply_absolute_coupon(coupon, item_price_list)
-
+            cart_total = sum(item[1] for item in item_price_list)
+            if cart_total >= coupon.minimum_spend:
+                if coupon.is_percent:
+                    cls.apply_percent_coupon(coupon, item_price_list)
+                else:
+                    cls.apply_absolute_coupon(coupon, item_price_list)
 
     @classmethod
     def apply_percent_coupon(cls, coupon, item_price_list):

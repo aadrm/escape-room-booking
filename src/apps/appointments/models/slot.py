@@ -33,15 +33,14 @@ class Slot(models.Model):
         on_delete=models.SET_NULL
     )
 
-
     def is_available(self):
-        return not self.is_reserved() \
+        return  self.is_available_to_staff() \
             and not self.is_affected_by_buffer() \
             and not self.is_enabled\
-            and self._is_start_in_future
 
     def is_available_to_staff(self):
-        return not self.is_reserved()
+        return not self.is_reserved() \
+            and self._is_start_in_future()
 
     def is_reserved(self):
         related_cart_items = self.cartitemappointment_set.all()

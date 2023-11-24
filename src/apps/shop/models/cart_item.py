@@ -19,8 +19,8 @@ class CartItem(models.Model):
     @property
     def price(self) -> Decimal:
         coupons_in_cart = self.cart.coupons.all().order_by('coupon__is_percent')
-        items_in_cart = self.cart.cartitem_set.all()
-        return CartItemPriceCalculatorService.calculate_price(self, coupons_in_cart, items_in_cart)
+        cart_items = self.cart.get_cartitem_set()
+        return CartItemPriceCalculatorService.calculate_price(self, coupons_in_cart, cart_items)
 
     def __str__(self) -> str:
         return (
