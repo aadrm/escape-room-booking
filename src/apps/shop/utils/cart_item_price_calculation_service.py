@@ -6,17 +6,21 @@ class CartItemPriceCalculatorService:
         and how they interact with other items in the cart.
     """
     @classmethod
-    def calculate_price(cls, cart_item, coupons, items) -> Decimal:
+    def calculate_price(cls, cart_item) -> Decimal:
+        cart = cart_item.cart
+        items = cart.get_cartitem_set()
+        coupons = cart.coupons.all().order_by('coupon__is_percent')
+        # create an array of [item, base_price] to have persistance during the
+        # calculations of each cart item price
         item_price_list = [[item, item.base_price] for item in items]
-        cls.apply_coupons(coupons, item_price_list)
+        cls.apply_coupons(cart, coupons, item_price_list)
         return cls.get_item_price(cart_item, item_price_list)
 
     @classmethod
-    def apply_coupons(cls, coupons, item_price_list):
+    def apply_coupons(cls, cart, coupons, item_price_list):
         for cart_coupon in coupons:
             coupon = cart_coupon.coupon
-            cart_total = sum(item[1] for item in item_price_list)
-            if cart_total >= coupon.minimum_spend:
+            if cart.get_total_base_price() >= coupon.minimum_spend:
                 if coupon.is_percent:
                     cls.apply_percent_coupon(coupon, item_price_list)
                 else:

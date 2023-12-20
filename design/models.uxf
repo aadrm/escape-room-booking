@@ -3,7 +3,7 @@
 name: string
 description: string
 is_active: bool
-theme_colour: char</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1056</x><y>712</y><w>168</w><h>200</h></coordinates><panel_attributes>Schedule
+theme_colour: char</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1056</x><y>704</y><w>168</w><h>200</h></coordinates><panel_attributes>Schedule
 --
 start_date: date
 end_date: date
@@ -41,7 +41,7 @@ For &gt;</panel_attributes><additional_attributes>10;90;10;10</additional_attrib
 --
 addItemToCart()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>712</y><w>168</w><h>152</h></coordinates><panel_attributes>AppointmentProductGroup
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>272</x><y>712</y><w>168</w><h>152</h></coordinates><panel_attributes>VoucherProduct
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>272</x><y>712</y><w>168</w><h>152</h></coordinates><panel_attributes>VoucherProductGroup
 --
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>344</x><y>624</y><w>240</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>280;10;280;60;10;60;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>624</y><w>80</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60;80;60;80;110</additional_attributes></element><element><id>Relation</id><coordinates><x>424</x><y>312</y><w>864</w><h>624</h></coordinates><panel_attributes>lt=-
 m1=0..1

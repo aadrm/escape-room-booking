@@ -28,8 +28,6 @@ class Cart(models.Model):
         total_base_price = items.aggregate(base_price=Sum('product__base_price'))['base_price']
         return total_base_price
 
-
-
     def get_coupons(self):
         Coupon = apps.get_model('shop', 'Coupon')
         coupon_ids = self.coupons.values('coupon')
@@ -76,8 +74,8 @@ class Cart(models.Model):
         Returns:
             CartItemAppointment: returns the newly created CartItemAppointment
         """
-        Product = apps.get_model('shop', 'Product')
-        Slot = apps.get_model('appointments', 'Slot')
+        # Product = apps.get_model('shop', 'Product')
+        # Slot = apps.get_model('appointments', 'Slot')
         CartItemAppointment = apps.get_model('shop', 'CartItemAppointment')
         # The only condition that needs to be passed is that the appointment to the cart
         # is still available to the staff. Any limitations to the end customer

@@ -43,13 +43,13 @@ class Slot(models.Model):
             and self._is_start_in_future()
 
     def is_reserved(self):
-        related_cart_items = self.cartitemappointment_set.all()
-        for item in related_cart_items:
-            if item.cart.is_slot_blocking():
-                return True
+        if hasattr(self, 'cart_item_appointment') and self.cart_item_appointment.is_blocking_slot():
+            return True
+        else:
+            return False
 
     def __str__(self):
-        return str(self.room) + ' | ' +  self.start.astimezone().strftime("%Y-%m-%d %H:%M" )
+        return str(self.room) + ' | ' + self.start.astimezone().strftime("%Y-%m-%d %H:%M")
 
     def _is_start_in_future(self):
         return self.start > timezone.now()
