@@ -16,9 +16,6 @@ class CartItemAppointment(CartItem):
     def is_expired(self):
         return self.expiry() < timezone.datetime.now()
 
-    def is_blocking_slot(self):
-        return self.is_booking_slot() and self.is_blocking_slot()
-
     def is_booking_slot(self):
         return self.cart.status == self.cart.Status.COMPLETED
 

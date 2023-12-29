@@ -17,6 +17,10 @@ class Cart(models.Model):
 
     status = models.PositiveSmallIntegerField(choices=Status.choices, default=Status.OPEN)
 
+    def set_completed(self):
+        self.status = self.Status.COMPLETED
+        self.save()
+
     def __str__(self) -> str:
         return str(self.pk)
 
@@ -32,7 +36,6 @@ class Cart(models.Model):
         Coupon = apps.get_model('shop', 'Coupon')
         coupon_ids = self.coupons.values('coupon')
         return Coupon.objects.filter(pk__in=coupon_ids)
-
 
     def add_coupon(self, coupon) -> None:
         Coupon = apps.get_model('shop', 'Coupon')
@@ -68,14 +71,12 @@ class Cart(models.Model):
         """adds an ItemAppointment to the class
 
         Args:
-            product (_type_): The product that's added
-            slot (_type_): The related slot
+            product (Product): The product that's added
+            slot (Slot): The related slot
 
         Returns:
             CartItemAppointment: returns the newly created CartItemAppointment
         """
-        # Product = apps.get_model('shop', 'Product')
-        # Slot = apps.get_model('appointments', 'Slot')
         CartItemAppointment = apps.get_model('shop', 'CartItemAppointment')
         # The only condition that needs to be passed is that the appointment to the cart
         # is still available to the staff. Any limitations to the end customer
