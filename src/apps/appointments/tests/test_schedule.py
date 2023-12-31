@@ -10,6 +10,10 @@ class BaseScheduleTestCase(TestCase):
 
     def setUp(self):
         self.room1 = Room.objects.create(name='room1')
+
+class TestScheduleSlotInteraction(BaseScheduleTestCase):
+
+    def test_create_slots(self):
         self.schedule = Schedule.objects.create(
             start_date=timezone.datetime.now().date(),
             end_date=timezone.datetime.now().date() + timedelta(days=6),
@@ -18,12 +22,6 @@ class BaseScheduleTestCase(TestCase):
             repeat_times=2,
             room=self.room1,
         )
-
-
-
-class TestScheduleSlotInteraction(BaseScheduleTestCase):
-
-    def test_create_slots(self):
         self.assertEqual(4, self.schedule.get_slots().count())
 
 

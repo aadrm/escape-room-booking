@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .slot import Slot
+from ..services import SlotFactoryService
 from common.days_of_week_mixin import DaysOfWeekMixin
 
 class Schedule(models.Model, DaysOfWeekMixin):
@@ -40,7 +40,7 @@ class Schedule(models.Model, DaysOfWeekMixin):
         if not self._state.adding:
             self._delete_related_not_booked_slots()
         super().save(*args, **kwargs)
-        Slot.create_slots_bound_to_schedule(
+        SlotFactoryService.create_slots_bound_to_schedule(
             schedule=self,
             start_date=self.start_date,
             end_date=self.end_date,
