@@ -17,13 +17,10 @@ class CartItemAppointment(CartItem):
         return self.expiry() < timezone.datetime.now()
 
     def is_booking_slot(self):
-        return self.cart.status == self.cart.Status.COMPLETED
+        return self.cart.is_completed()
 
     def is_reserving_slot(self):
-        return self.cart.status == self.cart.Status.OPEN and not self.is_expired()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        return self.cart.is_open() and not self.is_expired()
 
     def reset_expiry(self):
         self.set_aside_datum = timezone.now()

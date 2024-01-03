@@ -44,7 +44,7 @@ classDiagram
         /is_available_to_staff
 
         is_booked()
-        is_affected_by_buffer()
+        is_blocked_by_buffer()
         is_future_of_buffer()
         get_adjacent_slots()
         is_parallel_to_taken_slot()

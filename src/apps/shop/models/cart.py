@@ -1,31 +1,30 @@
-
 from django.apps import apps
 from django.db import models
 from django.db.models import Sum
-from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
 from apps.appointments.models import Slot
+from apps.appointments.services import SlotAvailabilityService
 from . import CartItemAppointment, CartItemCoupon
 
 
 class Cart(models.Model):
 
-
-    class Status(models.IntegerChoices):
-        OPEN = 1
-        COMPLETED = 2
-        CANCELLED = 3
-
-    status = models.PositiveSmallIntegerField(choices=Status.choices, default=Status.OPEN)
-
-    def set_completed(self):
-        self.status = self.Status.COMPLETED
-        self.save()
-
     def __str__(self) -> str:
         return str(self.pk)
 
+    def get_absolute_url(self):
+        return reverse('admin:shop_cart_change', args=[self.pk])
+
+    def is_open(self):
+        return not hasattr(self, 'order')
+
+    def is_completed(self):
+        if hasattr(self, 'order'):
+            return not self.order.is_cancelled
+        return False
+
     def is_slot_blocking(self):
-        return self.status in [self.Status.OPEN, self.Status.COMPLETED]
+        return self.is_open or self.is_completed
 
     def get_total_base_price(self):
         items = self.get_cartitem_set()
@@ -38,7 +37,6 @@ class Cart(models.Model):
         return Coupon.objects.filter(pk__in=coupon_ids)
 
     def add_coupon(self, coupon) -> None:
-        Coupon = apps.get_model('shop', 'Coupon')
         CartCoupon = apps.get_model('shop', 'CartCoupon')
 
         if coupon not in self.get_coupons():
@@ -53,9 +51,11 @@ class Cart(models.Model):
 
     def get_cartitemappointment_set(self):
         self.clean_expired_appointment_items()
+        # can't use self.cartitemappointment_set because the relationship is to the CartItem object
         return CartItemAppointment.objects.filter(cart=self)
 
     def get_cartitemcoupon_set(self):
+        # can't use self.cartitemappointment_set because the relationship is to the CartItem object
         return CartItemCoupon.objects.filter(cart=self)
 
     def get_cartitem_set(self):
@@ -81,7 +81,7 @@ class Cart(models.Model):
         # The only condition that needs to be passed is that the appointment to the cart
         # is still available to the staff. Any limitations to the end customer
         # should be taken care of in the front end.
-        if slot.is_available_to_staff():
+        if not SlotAvailabilityService.is_unavailable(slot):
             return CartItemAppointment.objects.create(
                 cart=self,
                 product=product,

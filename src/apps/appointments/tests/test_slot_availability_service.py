@@ -4,6 +4,7 @@ from django.utils.timezone import timedelta
 from apps.appointments.models import Slot
 from apps.appointments.services import SlotAvailabilityService
 from apps.shop.models import Cart, Product
+from apps.shop.services import CartToOrderService
 from .test_slot import BaseSlotTestCase
 
 class TestSlotAvailabilityCase(BaseSlotTestCase):
@@ -56,7 +57,7 @@ class TestSlotAvailabilityCase(BaseSlotTestCase):
     def test_is_booked(self):
         self.slot.start = timezone.now() + timedelta(days=1)
         self.cart.add_item_appointment(self.product, self.slot)
-        self.cart.status = self.cart.Status.COMPLETED
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(True, SlotAvailabilityService.is_booked(self.slot))
 
     def test_is_blocked_by_buffer(self):
@@ -69,26 +70,26 @@ class TestSlotAvailabilityCase(BaseSlotTestCase):
 
     def test_preceding_booked_slot_negates_buffer_effect(self):
         self.cart.add_item_appointment(self.product, self.preceding_slot_1)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(False, SlotAvailabilityService.is_blocked_by_buffer(self.slot))
 
     def test_parallel_booked_slot_negates_buffer_effect(self):
         self.cart.add_item_appointment(self.product, self.parallel_slot)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(False, SlotAvailabilityService.is_blocked_by_buffer(self.slot))
 
     def test_is_blocked_by_booked_slots_two_preceding_one_parallel(self):
         self.cart.add_item_appointment(self.product, self.preceding_slot_1)
         self.cart.add_item_appointment(self.product, self.preceding_slot_2)
         self.cart.add_item_appointment(self.product, self.parallel_slot)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(True, SlotAvailabilityService.is_blocked_by_booked_adjacent_slots(self.slot))
 
     def test_is_blocked_by_booked_slots_two_following_one_parallel(self):
         self.cart.add_item_appointment(self.product, self.following_slot_1)
         self.cart.add_item_appointment(self.product, self.following_slot_2)
         self.cart.add_item_appointment(self.product, self.parallel_slot)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(True, SlotAvailabilityService.is_blocked_by_booked_adjacent_slots(self.slot))
 
     def test_is_not_blocked_by_booked_slots_two_preceding_two_following(self):
@@ -96,7 +97,7 @@ class TestSlotAvailabilityCase(BaseSlotTestCase):
         self.cart.add_item_appointment(self.product, self.preceding_slot_2)
         self.cart.add_item_appointment(self.product, self.following_slot_1)
         self.cart.add_item_appointment(self.product, self.following_slot_2)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(False, SlotAvailabilityService.is_blocked_by_booked_adjacent_slots(self.slot))
 
     def test_is_blocked_by_settings_date(self):
@@ -157,11 +158,11 @@ class TestSlotDistantAvailabilityCase(BaseSlotTestCase):
 
     def test_is_blocked_by_distant_booked_slot(self):
         self.cart.add_item_appointment(self.product, self.distant_before_slot_1)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(True, SlotAvailabilityService.is_blocked_by_booked_distant_slots(self.slot))
 
     def test_is_not_blocked_by_distant_booked_slot_if_near_slot_also_booked(self):
         self.cart.add_item_appointment(self.product, self.distant_before_slot_1)
         self.cart.add_item_appointment(self.product, self.preceding_slot_1)
-        self.cart.set_completed()
+        CartToOrderService.cart_to_order(self.cart)
         self.assertEqual(False, SlotAvailabilityService.is_blocked_by_booked_distant_slots(self.slot))

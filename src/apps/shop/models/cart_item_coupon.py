@@ -6,8 +6,13 @@ from . import CartItem
 
 
 class CartItemCoupon(CartItem):
-    coupon = models.ForeignKey("shop.Coupon", verbose_name=_("coupon"), on_delete=models.SET_NULL, null=True, blank=True)
-
+    coupon = models.ForeignKey(
+        "shop.Coupon",
+        verbose_name=_("coupon"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
 
     def __str__(self) -> str:
         return super().__str__() + self.coupon.__str__()

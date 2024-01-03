@@ -9,3 +9,6 @@ from .cart_item import CartItem
 from .cart_item_appointment import CartItemAppointment
 from .cart_item_coupon import CartItemCoupon
 from .cart import Cart
+from .order import Order
+from .billing_info import BillingInfo
+from .order_item import OrderItem

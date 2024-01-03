@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from decimal import Decimal
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Product(models.Model):
@@ -12,6 +14,14 @@ class Product(models.Model):
         help_text=_('Whether the product is selectable by the public'),
         default=True,
     )
+    vat_factor = models.DecimalField(
+        'vat',
+        max_digits=2,
+        decimal_places=2,
+        default=0.19,
+        validators=[MinValueValidator(Decimal('0.00')), MaxValueValidator(Decimal('1.00'))]
+    )
+
 
     class Meta:
         ordering = ['base_price']

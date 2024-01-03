@@ -13,6 +13,22 @@ from ..models import (
 )
 
 
+class OrderRelatedFilter(admin.SimpleListFilter):
+    title = 'Order'
+    parameter_name = 'order'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('related', 'Related Order'),
+            ('not_related', 'No Related Order'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'related':
+            return queryset.filter(order__isnull=False)
+        if self.value() == 'not_related':
+            return queryset.filter(order__isnull=True)
+
 class CartItemAppointmentInlineForm(forms.ModelForm):
 
     class Meta:
@@ -57,9 +73,10 @@ class TabularInlineCartCoupons(admin.TabularInline):
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
+    list_filter = [OrderRelatedFilter]
     list_display = [
         'pk',
-        'status',
+        'order',
     ]
     inlines = [
         TabularInlineCartItemAppointments,
