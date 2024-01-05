@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.urls import path
-from django.shortcuts import render
+from django.urls import reverse
 
 admin.site.site_header = "Escape Room Admin Dashboard"
 admin.site.site_title = "Escape Room Admin Dashboard"

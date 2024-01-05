@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'apps.extended_admin',
+    'apps.admin_calendar',
     'apps.appointments',
     'apps.shop',
     'apps.rooster',

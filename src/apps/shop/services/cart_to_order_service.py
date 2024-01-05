@@ -25,4 +25,4 @@ class CartToOrderService:
 
     @staticmethod
     def cart_item_details_to_order_item_reference(item: OrderItem) -> str:
-        return 'item'
+        return item.product.name

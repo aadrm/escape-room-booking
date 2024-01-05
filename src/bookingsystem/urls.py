@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from apps.appointments.urls import urlpatterns as appointments_urls
-
+from apps.admin_calendar.admin import my_admin_site
 
 
 urlpatterns = [
     path('', include(appointments_urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
+    path('myadmin/', my_admin_site.urls),
+    path('api-auth/', include('rest_framework.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
