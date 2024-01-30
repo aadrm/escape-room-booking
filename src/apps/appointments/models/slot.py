@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
+
 class Slot(models.Model):
 
     class Availability(models.IntegerChoices):
@@ -18,7 +19,9 @@ class Slot(models.Model):
     start = models.DateTimeField(_('Start'), auto_now=False, auto_now_add=False)
     duration = models.PositiveSmallIntegerField(_('Duration'), default=60)
     buffer = models.PositiveSmallIntegerField(_('Buffer'), default=30)
-    availability = models.PositiveBigIntegerField('availability', choices=Availability.choices, default=Availability.DEFAULT)
+    availability = models.PositiveBigIntegerField(
+        'availability', choices=Availability.choices, default=Availability.DEFAULT
+    )
     appointment_end = models.DateTimeField(editable=False, blank=True, null=True)
     block_end = models.DateTimeField(editable=False, blank=True, null=True)
 
