@@ -2,6 +2,7 @@ from django.db.models import Min
 from . import SlotAvailabilityService
 from ..models import AppointmentsSettings
 
+
 class SlotPriceService:
 
     @staticmethod
@@ -18,7 +19,3 @@ class SlotPriceService:
             return AppointmentsSettings.load().adjacent_incentive_discount
         else:
             return 0
-
-
-
-
