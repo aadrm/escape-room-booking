@@ -10,7 +10,7 @@ class SlotQueryManager:
 
     @staticmethod
     def get_slots_by_start_between_datetimes(after: datetime, before: datetime) -> QuerySet:
-        return Slot.objects.filter(start__gte=after, start__lte=before)
+        return Slot.objects.filter(start__range=[after, before])
 
     @staticmethod
     def get_slots_that_touch_period_between_datetimes(after: datetime, before: datetime) -> QuerySet:

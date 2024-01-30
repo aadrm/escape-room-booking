@@ -6,7 +6,6 @@ from ..query_managers import SlotQueryManager
 from ..models import AppointmentsSettings
 
 
-
 class SlotAvailabilityService:
     """
     There are different conditions that affect the state and availability of a slot:
@@ -30,6 +29,9 @@ class SlotAvailabilityService:
             - blocked by other bookings (smart calendar)
         or
         - reserved (in an "open" order and reserved for some time)
+
+    + free (Can be deleted automatically by changing schedules)
+        - enabled and not booked
 
     + visible (Shows up in the calendar)
         - not hidden
@@ -56,6 +58,13 @@ class SlotAvailabilityService:
             SlotAvailabilityService.is_blocked_by_settings(slot) or
             SlotAvailabilityService.is_blocked_by_booked_adjacent_slots(slot) or
             SlotAvailabilityService.is_blocked_by_booked_distant_slots(slot)
+        )
+
+    @staticmethod
+    def is_free(slot) -> bool:
+        return (
+            slot.is_enabled and
+            not SlotAvailabilityService.is_booked(slot)
         )
 
     @staticmethod
@@ -109,6 +118,12 @@ class SlotAvailabilityService:
         return SlotQueryManager.get_slots_by_start_between_datetimes(after_datetime, before_datetime)
 
     @staticmethod
+    def get_adjacent_slots(slot) -> QuerySet:
+        preceding = SlotAvailabilityService.get_preceding_slots(slot).order_by()
+        following = SlotAvailabilityService.get_following_slots(slot).order_by()
+        return preceding.union(following)
+
+    @staticmethod
     def get_parallel_slots(slot) -> QuerySet:
         minutes = AppointmentsSettings.load().parallel_slot_frame_in_minutes
         after_datetime = slot.start - timedelta(minutes=minutes)
@@ -131,6 +146,11 @@ class SlotAvailabilityService:
     @staticmethod
     def is_preceding_slot_booked(slot) -> bool:
         slots = SlotAvailabilityService.get_preceding_slots(slot)
+        return SlotAvailabilityService.is_at_least_one_slot_taken(slots)
+
+    @staticmethod
+    def is_adjacent_slot_booked(slot) -> bool:
+        slots = SlotAvailabilityService.get_adjacent_slots(slot)
         return SlotAvailabilityService.is_at_least_one_slot_taken(slots)
 
     @staticmethod
@@ -185,5 +205,3 @@ class SlotAvailabilityService:
     @staticmethod
     def is_blocked_by_settings(slot) -> bool:
         return slot.start.date() > AppointmentsSettings.load().get_earliest_slot_date_limit()
-
-

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from ..services import SlotFactoryService
+from ..services import SlotFactoryService, SlotAvailabilityService
 from common.days_of_week_mixin import DaysOfWeekMixin
 
 class Schedule(models.Model, DaysOfWeekMixin):
@@ -30,15 +30,15 @@ class Schedule(models.Model, DaysOfWeekMixin):
     def get_slots(self):
         return self.slots.all()
 
-    def _delete_related_not_booked_slots(self):
+    def _delete_related_free_slots(self):
         slots = self.get_slots()
         for slot in slots:
-            if not slot.is_booked():
+            if SlotAvailabilityService.is_free(slot):
                 slot.delete()
 
     def save(self, *args, **kwargs):
         if not self._state.adding:
-            self._delete_related_not_booked_slots()
+            self._delete_related_free_slots()
         super().save(*args, **kwargs)
         SlotFactoryService.create_slots_bound_to_schedule(
             schedule=self,
@@ -54,5 +54,5 @@ class Schedule(models.Model, DaysOfWeekMixin):
 
 
     def delete(self):
-        self._delete_related_not_booked_slots()
+        self._delete_related_free_slots()
         super().delete()

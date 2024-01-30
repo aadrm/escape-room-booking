@@ -47,6 +47,8 @@ class SlotFactoryService:
 
             current_date += timedelta(days=1)
 
-        Slot.objects.bulk_create(slots_to_save)
+        # not using bulk_create as it bypasses the custom save() method
+        for slot in slots_to_save:
+            slot.save()
 
         logger.info(lambda: f'finished processing. Totel created slots: {total_created}')

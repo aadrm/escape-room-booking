@@ -39,6 +39,7 @@ class AppointmentsSettings(SingletonModel):
         verbose_name=("This many booked preceding or following slots will affect the availability of other slots"),
         default=2,
     )
+
     booked_parallel_slots_blocking_count = models.PositiveSmallIntegerField(
         verbose_name=("This amount of booked parallel slots will affect the availability of other slots"),
         default=1,
@@ -48,6 +49,21 @@ class AppointmentsSettings(SingletonModel):
         verbose_name=("Block slots this many minutes away from other slots on the same day"),
         default=90,
     )
+
+    parallel_incentive_discount = models.DecimalField(
+        verbose_name=("Parallel incentive discount in euro"),
+        max_digits=3,
+        decimal_places=2,
+        default=0,
+    )
+
+    adjacent_incentive_discount = models.DecimalField(
+        verbose_name=("Parallel incentive discount in euro"),
+        max_digits=3,
+        decimal_places=2,
+        default=0,
+    )
+
 
     def get_earliest_slot_date_limit(self):
         date_limit = AppointmentsSettings.load().prevent_bookings_after_date

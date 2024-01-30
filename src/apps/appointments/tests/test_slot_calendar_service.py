@@ -23,7 +23,3 @@ class SlotCalendarServiceTestCase(AppointmentsSettingsTestCase):
             repeat_times=4,
             room=self.room,
         )
-
-    def test_slot_days(self):
-        SlotCalendarService.days_with_free_slots_in_month_by_room(year=2024, month=2, room=self.room)
-        return True

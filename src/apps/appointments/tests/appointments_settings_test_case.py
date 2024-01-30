@@ -13,4 +13,6 @@ class AppointmentsSettingsTestCase(TestCase):
             buffer_in_minutes=180,
             parallel_slot_frame_in_minutes=15,
             adjacent_slot_frame_in_minutes=15,
+            parallel_incentive_discount=5,
+            adjacent_incentive_discount=2,
         )

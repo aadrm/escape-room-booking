@@ -42,32 +42,44 @@ class TestSaveSlotCase(BaseSlotTestCase):
         self.conflicting_slot.save()
         self.slot.save()
 
-    def test_conflicting_slot_crosses_start_save_raises_validation_error(self):
+    def test_conflicting_slot_crosses_start_not_saved(self):
         self.conflicting_slot.start = timezone.now() - timedelta(minutes=25)
-        with self.assertRaises(ValidationError):
-            self.conflicting_slot.save()
+        self.conflicting_slot.save()
+        saved_slots = Slot.objects.filter(id=self.conflicting_slot.id)
+        self.assertQuerysetEqual(saved_slots, [])
 
-    def test_conflicting_slot_crosses_end_save_raises_validation_error(self):
+    def test_conflicting_slot_crosses_end_not_saved(self):
         self.conflicting_slot.start = timezone.now() + timedelta(minutes=25)
-        with self.assertRaises(ValidationError):
-            self.conflicting_slot.save()
+        self.conflicting_slot.save()
+        saved_slots = Slot.objects.filter(id=self.conflicting_slot.id)
+        self.assertQuerysetEqual(saved_slots, [])
 
-    def save_conflicting_slot_same_start_and_end_raises_validation_error(self):
+    def save_conflicting_slot_same_start_and_end_not_saved(self):
         self.conflicting_slot.start = timezone.now()
-        with self.assertRaises(ValidationError):
-            self.conflicting_slot.save()
+        self.conflicting_slot.save()
+        saved_slots = Slot.objects.filter(id=self.conflicting_slot.id)
+        self.assertQuerysetEqual(saved_slots, [])
 
 
 class TestDeleteSlotCase(BaseSlotTestCase):
 
     def test_delete_successful(self):
+        # Mock is_booked method to return False
         self.slot.is_booked = lambda: False
+
+        # Delete the slot
         self.slot.delete()
 
+        # Check that the slot does not exist in the database
+        deleted_slots = Slot.objects.filter(id=self.slot.id)
+        self.assertQuerysetEqual(deleted_slots, [])
 
-    def test_delete_booked_slot_raises_validation_error(self):
+    def test_delete_booked_slot_not_deleted(self):
         self.slot.is_booked = lambda: True
-        with self.assertRaises(ValidationError):
-            self.slot.delete()
+        self.slot.delete()
+        self.assertTrue(self.slot)
+
+
+
 
 

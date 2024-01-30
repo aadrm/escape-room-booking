@@ -30,6 +30,11 @@ SECRET_KEY = 'django-insecure-x70ju9obx#=t01wxusdk&te+$_9nq-9g&xghq6%)fzch-p%z@#
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Update with your actual frontend URL
+]
+CORS_ORIGIN_WHITELIST = ["http://localhost:5173",] # Matches the port that Vue.js is using
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -53,10 +58,12 @@ INSTALLED_APPS = [
     'apps.appointments',
     'apps.shop',
     'apps.rooster',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
