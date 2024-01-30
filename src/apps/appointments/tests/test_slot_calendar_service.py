@@ -3,9 +3,9 @@ from datetime import time
 from django.utils import timezone
 from django.utils.timezone import timedelta
 
-from apps.appointments.models import Slot, Room, Schedule
-from apps.appointments.services import SlotCalendarService
+from apps.appointments.models import Room, Schedule
 from . import AppointmentsSettingsTestCase
+
 
 class SlotCalendarServiceTestCase(AppointmentsSettingsTestCase):
 

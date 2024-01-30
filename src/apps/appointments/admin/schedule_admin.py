@@ -8,12 +8,12 @@ from common.days_of_week_form_mixin import DaysOfWeekFormMixin
 from ..models import Schedule
 
 
-
 class CustomScheduleForm(DaysOfWeekFormMixin, forms.ModelForm):
     # # Customizations to the form fields or behavior can be added here
     class Meta:
         model = Schedule
         fields = '__all__'
+
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
@@ -35,17 +35,6 @@ class ScheduleAdmin(admin.ModelAdmin):
         selected_days = obj.get_days_of_week_display()
         return selected_days
     display_days_of_week.short_description = _('Days of Week')
-
-
-    # def get_form(self, request, obj=None, **kwargs):
-    #     form = super().get_form(request, obj, **kwargs)
-    #     if obj is not None:
-    #         form.initial = {'days_of_week': [0, 2]}
-    #     return form
-
-    # def get_changeform_initial_data(self, request):
-    #     initial = super().get_changeform_initial_data(request)
-    #     return initial
 
     def start_24h(self, obj):
         return obj.start_time.strftime('%H:%M')

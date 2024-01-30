@@ -2,6 +2,7 @@ from datetime import datetime, date
 from django.db.models.query import QuerySet
 from apps.appointments.models import Slot
 
+
 class SlotQueryManager:
 
     @staticmethod

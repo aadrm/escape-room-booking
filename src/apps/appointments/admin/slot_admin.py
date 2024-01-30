@@ -1,6 +1,5 @@
 from typing import Any
 from django.contrib import admin, messages
-from django.contrib.messages.storage import default_storage
 from django.core.exceptions import ValidationError
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
@@ -59,7 +58,7 @@ class SlotAdmin(admin.ModelAdmin):
 
     def start_24h(self, obj):
         return obj.start.strftime('%Y-%b-%d %H:%M')
-    start_24h.short_description="start"
+    start_24h.short_description = "start"
 
     def save_model(self, request: Any, obj: Any, form: Any, change: Any) -> None:
         try:
@@ -67,7 +66,6 @@ class SlotAdmin(admin.ModelAdmin):
             # obj.save()
         except ValidationError as e:
             self.message_user(request, e, level=messages.WARNING)
-
 
     def delete_model(self, request: HttpRequest, obj: Any) -> None:
         try:

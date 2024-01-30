@@ -31,7 +31,9 @@ class AppointmentsSettings(SingletonModel):
     )
 
     adjacent_slot_frame_in_minutes = models.PositiveSmallIntegerField(
-        verbose_name=("Consider adjacent other slots that end within this amount of minutes from the start of each other"),
+        verbose_name=(
+            "Consider adjacent other slots that end within this amount of minutes from the start of each other"
+        ),
         default=15,
     )
 
@@ -64,17 +66,11 @@ class AppointmentsSettings(SingletonModel):
         default=0,
     )
 
-
     def get_earliest_slot_date_limit(self):
         date_limit = AppointmentsSettings.load().prevent_bookings_after_date
         day_limit = AppointmentsSettings.load().prevent_bookings_after_days
         day_limit_date = timezone.now().date() + timedelta(days=day_limit)
         return min(date_limit, day_limit_date)
 
-
     class Meta:
         verbose_name_plural = " Settings"  # The space is a hack so this model admin occupies the first place
-
-
-
-

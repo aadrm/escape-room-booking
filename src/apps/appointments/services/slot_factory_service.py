@@ -6,6 +6,7 @@ from ..models import Slot
 
 logger = logging.getLogger(__name__)
 
+
 class SlotFactoryService:
 
     @staticmethod
@@ -20,7 +21,7 @@ class SlotFactoryService:
             buffer_minutes,
             room,
             repeat_times,
-        ):
+    ):
         slots_to_save = []
         total_created = 0
         current_date = max(start_date, timezone.now().date())
@@ -29,7 +30,7 @@ class SlotFactoryService:
             current_datetime = timezone.datetime.combine(current_date, start_time)
 
             if current_datetime.weekday() in days_of_week:
-                for n in range(repeat_times):
+                for _ in range(repeat_times):
                     slot = Slot(
                         start=current_datetime,
                         duration=duration_minutes,
@@ -43,7 +44,7 @@ class SlotFactoryService:
                         slots_to_save.append(slot)
                         total_created += 1
                     except ValidationError as e:
-                        logger.error(lambda: f'Error creating slot: {e}')
+                        logger.error(f'Error creating slot: {e}')
 
             current_date += timedelta(days=1)
 

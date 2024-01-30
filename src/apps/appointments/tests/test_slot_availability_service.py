@@ -7,6 +7,7 @@ from apps.shop.models import Cart, Product
 from apps.shop.services import CartToOrderService
 from .test_slot import BaseSlotTestCase
 
+
 class TestSlotAvailabilityCase(BaseSlotTestCase):
 
     def setUp(self):

@@ -83,6 +83,7 @@ class Slot(models.Model):
     def raise_validation_error_if_deleting_booked_slot(self):
         if self.is_booked():
             raise ValidationError(f'Cannot delete booked slot: {str(self)}')
+
     def raise_validation_error_if_conflicts_with_another_slot(self):
         conflicting_slots = self._overlapping_same_room_slots()
         if conflicting_slots.exists():

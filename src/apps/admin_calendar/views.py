@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.shortcuts import render
-from django.views import View
 from apps.appointments.models import Slot
 
 

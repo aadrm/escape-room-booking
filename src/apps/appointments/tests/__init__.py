@@ -1,3 +1,6 @@
+# __init__.py
+# flake8: noqa F401,F403
+
 from . import test_settings
 from .test_slot import *
 from .test_schedule import *

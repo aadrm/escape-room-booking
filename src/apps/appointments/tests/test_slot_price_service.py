@@ -1,11 +1,12 @@
 from django.utils import timezone
 from django.utils.timezone import timedelta
 
-from apps.appointments.models import Slot, Room
-from apps.appointments.services import SlotAvailabilityService, SlotPriceService
+from apps.appointments.models import Slot
+from apps.appointments.services import SlotPriceService
 from apps.shop.models import Cart, ProductGroupAppointment, Product
 from apps.shop.services import CartToOrderService
 from .test_slot import BaseSlotTestCase
+
 
 class TestSlotAvailabilityCase(BaseSlotTestCase):
 

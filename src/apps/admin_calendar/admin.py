@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.urls import reverse
 from .urls import urlpatterns
+
 
 class MyAdminSite(admin.AdminSite):
     app_name = 'admin_calendar'
@@ -11,5 +11,6 @@ class MyAdminSite(admin.AdminSite):
     def get_urls(self):
         urls = super().get_urls()
         return urlpatterns + urls
+
 
 my_admin_site = MyAdminSite(name='admin_calendar')

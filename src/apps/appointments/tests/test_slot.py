@@ -1,9 +1,6 @@
 from django.utils import timezone
 from django.utils.timezone import timedelta
-from django.core.exceptions import ValidationError
-from django.test import TestCase
 from apps.appointments.models import Slot, Room
-from apps.shop.models import Cart, Product
 from .appointments_settings_test_case import AppointmentsSettingsTestCase
 
 

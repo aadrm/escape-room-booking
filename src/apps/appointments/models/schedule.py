@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from ..services import SlotFactoryService, SlotAvailabilityService
 from common.days_of_week_mixin import DaysOfWeekMixin
 
+
 class Schedule(models.Model, DaysOfWeekMixin):
 
     start_date = models.DateField()
@@ -51,7 +52,6 @@ class Schedule(models.Model, DaysOfWeekMixin):
             room=self.room,
             repeat_times=self.repeat_times,
         )
-
 
     def delete(self):
         self._delete_related_free_slots()

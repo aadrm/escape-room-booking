@@ -11,6 +11,7 @@ class BaseScheduleTestCase(TestCase):
     def setUp(self):
         self.room1 = Room.objects.create(name='room1')
 
+
 class TestScheduleSlotInteraction(BaseScheduleTestCase):
 
     def test_create_slots(self):
@@ -23,5 +24,3 @@ class TestScheduleSlotInteraction(BaseScheduleTestCase):
             room=self.room1,
         )
         self.assertEqual(4, self.schedule.get_slots().count())
-
-
