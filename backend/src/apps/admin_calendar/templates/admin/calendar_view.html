@@ -1,0 +1,30 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock extrastyle %}
+
+{% block content %}
+{{ block.super }}
+<div class="nice-padding">
+    <br>
+    <br>
+
+    <section class="c-section-light">
+        <div class="container">
+            <div class="calendars">
+                <div id="1" class="calendar-frame js-calendar-window" data-url="{% url 'admin_calendar:ajax_admin_calendar' %}" data-room="0"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src =" {% static 'js/calendar.js' %}"></script>
+{% endblock content %}
+
+
+
+{% block page_title %}Slot Overview{% endblock %}
+{% block titletag %}Slot Overview{% endblock %}
