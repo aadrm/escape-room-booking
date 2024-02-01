@@ -45,7 +45,3 @@ class SlotWithStartingPriceSerializer(SlotSerializer):
 class SlotWithStartingPriceAndAvailabilitySerializer(SlotWithAvailabilitySerializer, SlotWithStartingPriceSerializer):
     ...
 
-
-class DaysWithAvailableSlotsSerializer(serializers.Serializer):
-    day = serializers.DateField()
-    slots_available = serializers.BooleanField()

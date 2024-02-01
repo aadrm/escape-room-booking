@@ -6,6 +6,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'slots', views.SlotViewSet)
+router.register(r'rooms', views.RoomViewSet)
 
 app_name = 'appointments'
 

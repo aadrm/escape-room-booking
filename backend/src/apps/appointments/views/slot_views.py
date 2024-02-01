@@ -1,5 +1,5 @@
 from datetime import date
-from rest_framework import permissions, viewsets, status
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -7,16 +7,14 @@ from ..services import SlotCalendarService
 from ..models import Slot
 from ..serializers import (
     SlotSerializer,
-    SlotWithAvailabilitySerializer,
-    SlotWithStartingPriceSerializer,
-    SlotWithStartingPriceAndAvailabilitySerializer
+    SlotWithStartingPriceAndAvailabilitySerializer,
+    DaysWithAvailableSlotsSerializer,
 )
 
 
 class SlotViewSet(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
-    # permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=['get'], url_path='days_available/(?P<year>\d+)/(?P<month>\d+)')
     def get_days_available(self, request, year, month):
